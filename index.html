@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GhostXvloid App</title>
+  <style>
+    * {margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;}
+    body {background:#fff;color:#444;}
+    
+    .container {display:flex;justify-content:center;align-items:center;height:100vh;padding:20px;}
+    
+    .card {background:#fff;padding:25px;border-radius:15px;box-shadow:0 4px 12px rgba(0,0,0,.1);text-align:center;width:100%;max-width:400px;}
+    
+    h2 {margin-bottom:15px;color:#c9a300;}
+    
+    input, select {width:100%;padding:12px;border-radius:10px;border:1px solid #ddd;margin:10px 0;}
+    
+    button {padding:12px 20px;border:none;border-radius:10px;font-weight:bold;cursor:pointer;margin:5px 0;width:100%;}
+    
+    .btn-main {background:linear-gradient(45deg, #ffcc00, #ff3333);color:#fff;}
+    
+    .btn-sec {background:linear-gradient(45deg, #999, #555);color:#fff;}
+    
+    /* top bar */
+    .topbar {position:fixed;top:0;left:0;right:0;
+    
+    background:#222;color:#fff;padding:15px;display:flex;align-items:center;}
+    
+    .menu-btn {font-size:24px;cursor:pointer;margin-right:15px;}
+    
+    .title {font-weight:bold;}
+    
+    /* sidebar */
+    .sidebar {position:fixed;top:0;left:-250px;width:250px;height:100%;background:#333;color:#fff;padding:20px;transition:.3s;}
+    
+    .sidebar.active {left:0;}
+    
+    .sidebar a {display:block;padding:10px 0;color:#fff;text-decoration:none;}
+    
+    .sidebar a:hover {text-decoration:underline;}
+  
+      /* bottom nav */
+    .bottom-nav {position:fixed;bottom:0;left:0;right:0;background:#ffffff;border-top:1px solid #ddd;display:flex;justify-content:space-around;padding:3px 0;}
+    .bottom-nav button {background:none;border:none;font-size:16px;color:#444;}
+    
+    .hidden {display:none;}
+  </style>
+</head>
+<body>
+
+  <!-- Pages -->
+  <div class="container" id="loginPage">
+    <div class="card">
+      <h2>Login</h2>
+      <input type="text" id="username" placeholder="Username">
+      <input type="password" id="password" placeholder="Password">
+      <button class="btn-main" onclick="login()">Login</button>
+    </div>
+  </div>
+
+  <div class="container hidden" id="homePage">
+    <div class="card">
+      <h2 id="welcome">Welcome</h2>
+      <button class="btn-main" onclick="goPage('attack')">Attack</button>
+      <button class="btn-sec" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="container hidden" id="attackPage">
+    <div class="card">
+      <h2>Attack</h2>
+      <input type="text" id="targetNumber" placeholder="Target number (e.g. +62812...)">
+      <select id="bugType">
+        <option value="">-- Select bug --</option>
+        <option value="delay invis">Delay Invis</option>
+        <option value="force close">Force Close</option>
+      </select>
+      <button class="btn-main" onclick="sendAttack()">🚀 Send Bug</button>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav hidden" id="bottomNav">
+    <button onclick="goPage('home')">🏠 Home</button>
+    <button onclick="goPage('attack')">👾 Attack</button>
+  </div>
+
+<script>
+  function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("active");
+  }
+
+  function login() {
+    let user = document.getElementById("username").value;
+    let pass = document.getElementById("password").value;
+    if(user && pass){
+      document.getElementById("loginPage").classList.add("hidden");
+      document.getElementById("homePage").classList.remove("hidden");
+      document.getElementById("bottomNav").classList.remove("hidden");
+      document.getElementById("welcome").innerText = "Ola " + user + ", Welcome To GhostXvloid App";
+    } else {
+      alert("Masukkan username & password!");
+    }
+  }
+
+  function logout() {
+    document.getElementById("homePage").classList.add("hidden");
+    document.getElementById("attackPage").classList.add("hidden");
+    document.getElementById("loginPage").classList.remove("hidden");
+    document.getElementById("bottomNav").classList.add("hidden");
+  }
+
+  function goPage(page) {
+    document.getElementById("homePage").classList.add("hidden");
+    document.getElementById("attackPage").classList.add("hidden");
+    if(page === 'home'){
+      document.getElementById("homePage").classList.remove("hidden");
+    } else if(page === 'attack'){
+      document.getElementById("attackPage").classList.remove("hidden");
+    }
+    document.getElementById("sidebar").classList.remove("active");
+  }
+
+  function sendAttack() {
+    let number = document.getElementById("targetNumber").value;
+    let bug = document.getElementById("bugType").value;
+    if(!number || !bug){
+      alert("Isi nomor dan pilih bug!");
+      return;
+    }
+    alert("Bug " + bug + " berhasil dikirim ke " + number);
+    goPage('attack');
+  }
+</script>
+</body>
+</html>
